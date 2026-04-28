@@ -53,7 +53,7 @@ Images are rebuilt:
 
 - on every push to `main` that touches `php/**`
 - on `workflow_dispatch`
-- weekly via cron (Sun 03:00 UTC) to pick up upstream `php:8.X-apache` point releases
+- monthly via cron (1st of month, 03:00 UTC) to pick up upstream `php:8.X-apache` point releases
 
 ## Layout
 

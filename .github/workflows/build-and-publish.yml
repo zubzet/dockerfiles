@@ -8,8 +8,9 @@ on:
       - '.github/workflows/build-and-publish.yml'
   workflow_dispatch:
   schedule:
-    # Weekly Sunday 03:00 UTC — pick up upstream php:X.Y point releases
-    - cron: '0 3 * * 0'
+    # Monthly 1st 03:00 UTC — pick up upstream php:X.Y point releases.
+    # Multi-arch (amd64+arm64) × 18 images is expensive; weekly is overkill.
+    - cron: '0 3 1 * *'
 
 concurrency:
   group: build-publish-${{ github.ref }}
