@@ -2,8 +2,8 @@ FROM php:8.5-apache
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
+RUN apt-get -o Acquire::Retries=3 update \
+ && apt-get -o Acquire::Retries=3 install -y --no-install-recommends \
       ca-certificates git curl unzip \
  && install-php-extensions \
       bcmath bz2 calendar curl exif gd intl mbstring \
