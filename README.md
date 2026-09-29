@@ -2,13 +2,15 @@
 
 Opinionated PHP+Apache Docker base images for the [ZubZet framework](https://github.com/zubzet/framework) and downstream projects.
 
-Three variants per PHP version (8.0–8.5):
+Three variants per PHP version (8.0–8.6):
 
 | Tag | Base | Use case |
 | --- | ---- | -------- |
 | `8.X` | `php:8.X-cli` + extensions + Composer | CLI workers, cron containers |
 | `8.X-apache` | `php:8.X-apache` + extensions + Composer + opinionated vhost | Web app containers (mod_php) |
 | `8.X-xdebug` | `8.X-apache` + Xdebug 3 | Local dev / debugging |
+
+> `8.6` is a pre-release: it tracks upstream `php:8.6-rc-*` (currently 8.6.0RC2) and switches to the stable base once PHP 8.6.0 ships.
 
 All images ship with the same set of PHP extensions:
 
@@ -63,7 +65,7 @@ Mirrors the `apko/melange` structure of the company-internal source repo, so swa
 php/
   v8.0/{php,apache,xdebug}/Dockerfile
   v8.1/...
-  v8.5/...
+  v8.6/...
   config-apache/site-000-default.conf
   config-xdebug/xdebug.ini
 ```

@@ -1,0 +1,24 @@
+FROM php:8.6-rc-apache
+
+# install-php-extensions does not know PHP 8.6 yet: it has no Debian build deps
+# for mbstring (no longer compiled into php:8.6) and misses runtime libs for gd.
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+RUN echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+      ca-certificates git curl unzip \
+      libonig-dev libwebpdemux2 libwebpmux3 \
+ && install-php-extensions \
+      bcmath bz2 calendar curl exif gd intl mbstring \
+      mysqli pdo_mysql sockets iconv session zip \
+      xmlreader xmlwriter simplexml \
+ && a2enmod rewrite \
+ && curl -sS https://getcomposer.org/installer | php -- \
+      --install-dir=/usr/local/bin --filename=composer \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY config-apache/site-000-default.conf /etc/apache2/sites-available/000-default.conf
+
+WORKDIR /var/www/html
