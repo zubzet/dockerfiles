@@ -88,6 +88,10 @@ jobs:
   base-merge:
     name: merge ${{ matrix.php }}-${{ matrix.variant }}
     needs: base-build
+    # Run even when another version's build failed, so one broken version (e.g.
+    # an EOL Debian base) does not block publishing the others. A version whose
+    # own builds failed has no digests and fails here without pushing.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -128,6 +132,8 @@ jobs:
       - name: Create & push multi-arch manifest
         working-directory: ${{ runner.temp }}/digests
         run: |
+          # Never publish a partial (single-arch) manifest.
+          [ "$(ls | wc -l)" -eq 2 ] || { echo "expected 2 arch digests, got: $(ls)"; exit 1; }
           tag="${{ matrix.php }}${{ matrix.suffix }}"
           docker buildx imagetools create \
             -t "${IMAGE_GHCR}:${tag}" \
@@ -143,6 +149,7 @@ jobs:
   xdebug-build:
     name: build ${{ matrix.php }}-xdebug (${{ matrix.platform }})
     needs: base-merge
+    if: ${{ !cancelled() }}
     runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
@@ -203,6 +210,7 @@ jobs:
   xdebug-merge:
     name: merge ${{ matrix.php }}-xdebug
     needs: xdebug-build
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -237,6 +245,8 @@ jobs:
       - name: Create & push multi-arch manifest
         working-directory: ${{ runner.temp }}/digests
         run: |
+          # Never publish a partial (single-arch) manifest.
+          [ "$(ls | wc -l)" -eq 2 ] || { echo "expected 2 arch digests, got: $(ls)"; exit 1; }
           tag="${{ matrix.php }}-xdebug"
           docker buildx imagetools create \
             -t "${IMAGE_GHCR}:${tag}" \
