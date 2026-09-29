@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
         variant: [php, apache]
         platform: [linux/amd64, linux/arm64]
         include:
@@ -95,7 +95,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
         variant: [php, apache]
         include:
           - variant: php
@@ -150,7 +150,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
         platform: [linux/amd64, linux/arm64]
         include:
           - platform: linux/amd64
@@ -210,7 +210,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
     steps:
       - name: Download digests
         uses: actions/download-artifact@v4
